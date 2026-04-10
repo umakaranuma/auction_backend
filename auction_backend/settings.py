@@ -131,3 +131,48 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
 }
+
+# Logging — emit everything WARNING and above to the console so all errors
+# appear in Railway's deployment logs.  The 'django' and 'django.request'
+# loggers are set to DEBUG so that 500-level exceptions and their full
+# tracebacks are always printed, regardless of the DEBUG setting.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} [{levelname}] {name}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'stderr': {
+            'class': 'logging.StreamHandler',
+            'stream': 'ext://sys.stderr',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['stderr'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['stderr'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['stderr'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['stderr'],
+            # Set to DEBUG to log every SQL query; switch to WARNING in
+            # production once the startup issue is resolved.
+            'level': 'WARNING',
+            'propagate': False,
+        },
+    },
+}
