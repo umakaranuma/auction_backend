@@ -4,8 +4,8 @@ import mimetypes
 from supabase import create_client, Client
 
 def get_supabase_client() -> Client:
-    url = os.getenv("SUPABASE_URL")
-    key = os.getenv("SUPABASE_KEY")
+    url = (os.getenv("SUPABASE_URL") or "").strip()
+    key = (os.getenv("SUPABASE_KEY") or "").strip()
     if not url or not key:
         raise Exception("Supabase credentials not found in environment variables.")
     return create_client(url, key)
@@ -19,7 +19,7 @@ def upload_image_to_supabase(file_obj, folder_name="images") -> str:
         return ""
 
     supabase = get_supabase_client()
-    bucket_name = os.getenv("SUPABASE_BUCKET", "cricket")
+    bucket_name = (os.getenv("SUPABASE_BUCKET") or "cricket").strip()
 
     # Generate a unique filename
     ext = os.path.splitext(file_obj.name)[1]
@@ -64,7 +64,7 @@ def delete_image_from_supabase(public_url: str) -> bool:
         return False
 
     supabase = get_supabase_client()
-    bucket_name = os.getenv("SUPABASE_BUCKET", "cricket")
+    bucket_name = (os.getenv("SUPABASE_BUCKET") or "cricket").strip()
 
     # Extract the relative path from the public URL
     # Format: https://[project].supabase.co/storage/v1/object/public/[bucket]/[path]

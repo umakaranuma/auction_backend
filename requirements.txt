@@ -1,5 +1,7 @@
 django==4.2.7
 djangorestframework==3.14.0
+# Required by Django/DRF ImageField for multipart image validation (often present locally but missing on Vercel).
+Pillow>=10.3.0,<13
 django-cors-headers==4.3.1
 python-dotenv==1.0.1
 supabase==2.3.4
