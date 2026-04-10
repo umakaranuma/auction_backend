@@ -11,11 +11,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / '.env')
 
-SECRET_KEY = 'django-insecure-*1d4r-$c^9n)lfs!*i3jkw7%cxbq=j6q@+0$rhc^u#9qy@ygdx'
+def env_bool(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
 
-DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+def env_list(name: str, default: list[str] | None = None) -> list[str]:
+    value = os.getenv(name, "")
+    if not value:
+        return default or []
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-*1d4r-$c^9n)lfs!*i3jkw7%cxbq=j6q@+0$rhc^u#9qy@ygdx",
+)
+
+DEBUG = env_bool("DJANGO_DEBUG", default=False)
+
+ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", default=["*"] if DEBUG else [])
 
 # Application definition
 INSTALLED_APPS = [
