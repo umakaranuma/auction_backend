@@ -32,7 +32,15 @@ SECRET_KEY = os.getenv(
 
 DEBUG = env_bool("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", default=["*"] if DEBUG else [])
+_default_allowed_hosts = ["*"] if DEBUG else ["localhost", "127.0.0.1"]
+railway_public_domain = os.getenv("RAILWAY_PUBLIC_DOMAIN")
+if railway_public_domain:
+    _default_allowed_hosts.append(railway_public_domain)
+
+# Allow Railway-generated app domains when explicit hosts are not set.
+_default_allowed_hosts.append(".up.railway.app")
+
+ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", default=_default_allowed_hosts)
 
 # Application definition
 INSTALLED_APPS = [
