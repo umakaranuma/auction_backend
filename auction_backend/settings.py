@@ -30,9 +30,15 @@ SECRET_KEY = os.getenv(
     "django-insecure-*1d4r-$c^9n)lfs!*i3jkw7%cxbq=j6q@+0$rhc^u#9qy@ygdx",
 )
 
-DEBUG = env_bool("DJANGO_DEBUG", default=False)
+DEBUG = env_bool("DJANGO_DEBUG", default=True)
 
-ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", default=["*"] if DEBUG else [])
+# Always include the production Railway domain so requests are never rejected
+# by ALLOWED_HOSTS even when the env var is not explicitly set.
+_RAILWAY_DOMAIN = "auctionbackend-production-ed2c.up.railway.app"
+_default_hosts = ["*"] if DEBUG else [_RAILWAY_DOMAIN, "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", default=_default_hosts)
+if _RAILWAY_DOMAIN not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(_RAILWAY_DOMAIN)
 
 # Application definition
 INSTALLED_APPS = [
