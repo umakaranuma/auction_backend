@@ -8,8 +8,14 @@ from django.http import JsonResponse
 def health(request):
     return JsonResponse({"status": "ok"})
 
+
+def test(request):
+    """Minimal endpoint with zero app dependencies — use to verify basic routing."""
+    return JsonResponse({"status": "ok"})
+
 urlpatterns = [
     path('', health),
+    path('test/', test),
     path('admin/', admin.site.urls),
     path('api/', include('players.urls')),
 ]
