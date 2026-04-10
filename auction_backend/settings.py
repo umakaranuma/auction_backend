@@ -40,6 +40,9 @@ if railway_public_domain:
 # Allow Railway-generated app domains when explicit hosts are not set.
 _default_allowed_hosts.append(".up.railway.app")
 
+# Vercel preview/production (*.vercel.app)
+_default_allowed_hosts.append(".vercel.app")
+
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", default=_default_allowed_hosts)
 
 # Application definition
@@ -116,8 +119,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
-STATIC_URL = 'static/'
+# Static files (collect to staticfiles/ for Vercel CDN route in vercel.json)
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Media files (player photos, club logos)
 MEDIA_URL = '/media/'
