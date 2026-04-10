@@ -3,5 +3,6 @@ djangorestframework==3.14.0
 django-cors-headers==4.3.1
 python-dotenv==1.0.1
 supabase==2.3.4
-mysqlclient==2.2.1
+# Pure-Python driver; mysqlclient needs libmysql dev headers (not on Vercel).
+PyMySQL==1.1.1
 gunicorn==21.2.0
