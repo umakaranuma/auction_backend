@@ -1,0 +1,5 @@
+[build]
+providers = ["python"]
+
+[start]
+cmd = "gunicorn auction_backend.wsgi:application"
