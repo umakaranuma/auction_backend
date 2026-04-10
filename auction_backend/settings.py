@@ -11,11 +11,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / '.env')
 
-SECRET_KEY = 'django-insecure-*1d4r-$c^9n)lfs!*i3jkw7%cxbq=j6q@+0$rhc^u#9qy@ygdx'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-*1d4r-$c^9n)lfs!*i3jkw7%cxbq=j6q@+0$rhc^u#9qy@ygdx')
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() not in ('false', '0', 'no')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    'auctionbackend-production-ed2c.up.railway.app,localhost,127.0.0.1',
+).split(',')
 
 # Application definition
 INSTALLED_APPS = [
