@@ -17,6 +17,6 @@ class TeamAdmin(admin.ModelAdmin):
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'tournament', 'role', 'jersey_number', 'batting_hand', 'bowling_hand']
+    list_display = ['name', 'club', 'tournament', 'role', 'jersey_number', 'batting_hand', 'bowling_hand']
     list_filter = ['tournament', 'role', 'batting_hand', 'bowling_hand']
-    search_fields = ['name', 'phone']
+    search_fields = ['name', 'club', 'phone']

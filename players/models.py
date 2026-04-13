@@ -61,6 +61,7 @@ class Player(models.Model):
         Tournament, on_delete=models.CASCADE, related_name='players'
     )
     name = models.CharField(max_length=200)
+    club = models.CharField(max_length=200, blank=True, default='')
     photo = models.URLField(max_length=500, blank=True, null=True)
     jersey_number = models.CharField(max_length=10, blank=True, default='')
     age = models.CharField(max_length=10, blank=True, default='')
