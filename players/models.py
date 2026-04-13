@@ -6,6 +6,7 @@ class Tournament(models.Model):
     year = models.CharField(max_length=50, blank=True, default='')
     club_name = models.CharField(max_length=200, blank=True, default='')
     club_logo = models.URLField(max_length=500, blank=True, null=True)
+    tournament_banner = models.URLField(max_length=500, blank=True, null=True)
     team_total_budget = models.IntegerField(default=1000)
     max_players_per_team = models.IntegerField(default=15)
     player_base_price = models.IntegerField(default=10)

@@ -61,6 +61,9 @@ class PlayerAuctionStatusSerializer(serializers.ModelSerializer):
 class TournamentSerializer(serializers.ModelSerializer):
     club_logo = serializers.ImageField(required=False, write_only=True)
     club_logo_url = serializers.ReadOnlyField(source='club_logo')
+    tournament_banner = serializers.ImageField(required=False, write_only=True)
+    tournament_banner_url = serializers.ReadOnlyField(source='tournament_banner')
+    banner_url = serializers.ReadOnlyField(source='tournament_banner')
     player_count = serializers.SerializerMethodField()
     team_count = serializers.SerializerMethodField()
 
@@ -68,7 +71,9 @@ class TournamentSerializer(serializers.ModelSerializer):
         model = Tournament
         fields = [
             'id', 'name', 'year', 'club_name',
-            'club_logo', 'club_logo_url', 'team_total_budget', 'max_players_per_team',
+            'club_logo', 'club_logo_url',
+            'tournament_banner', 'tournament_banner_url', 'banner_url',
+            'team_total_budget', 'max_players_per_team',
             'player_base_price', 'player_count', 'team_count', 'created_at',
         ]
 
@@ -76,12 +81,22 @@ class TournamentSerializer(serializers.ModelSerializer):
         logo_file = validated_data.pop('club_logo', None)
         if logo_file:
             validated_data['club_logo'] = upload_image_to_supabase(logo_file, "logos")
+        banner_file = validated_data.pop('tournament_banner', None)
+        if banner_file:
+            validated_data['tournament_banner'] = upload_image_to_supabase(
+                banner_file, "tournament_banners"
+            )
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
         logo_file = validated_data.pop('club_logo', None)
         if logo_file:
             validated_data['club_logo'] = upload_image_to_supabase(logo_file, "logos")
+        banner_file = validated_data.pop('tournament_banner', None)
+        if banner_file:
+            validated_data['tournament_banner'] = upload_image_to_supabase(
+                banner_file, "tournament_banners"
+            )
         return super().update(instance, validated_data)
 
     def get_player_count(self, obj):
